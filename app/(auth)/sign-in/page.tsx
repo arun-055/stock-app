@@ -4,7 +4,11 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import FooterLink from '@/components/forms/FooterLink'
+import { signInWithEmail } from '@/lib/actions/auth.actions'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 const signup = () => {
+  const router = useRouter();
     const {
       register,
       handleSubmit,
@@ -20,9 +24,13 @@ const signup = () => {
     )
     const onSubmit = async (data: SignInFormData)=> {
       try{
+          const result = await signInWithEmail(data);
+            if(result?.success) router.push('/');
+            else toast.error("Invalid email or password");
 
       }catch(error){
         console.log(error, {message: error});
+        toast.error(" Something went wrong during sign in.");
       }
     }
   return (
@@ -48,7 +56,6 @@ const signup = () => {
       />
        <Button type='submit'  disabled={isSubmitting} className='yellow-btn  w-full mt-5'>
       {isSubmitting ?"Signing In":"Sign in"}
-
     </Button>
      <FooterLink text="Don't have any account?" linkText="Sign Up" href="/sign-up" />
     </form>

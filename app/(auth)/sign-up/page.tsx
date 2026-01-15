@@ -37,6 +37,8 @@ const SignUp = () => {
             if(result.success) {
               router.push('/');
               router.refresh();
+            }else{
+                toast.error('Email id exists. Try with different email');
             }
         } catch (e) {
             console.error(e);
